@@ -4,7 +4,7 @@ const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const PugPlugin = require('pug-plugin');
 
 module.exports = {
-  entry: { index: 'src/index.pug' },
+  entry: { index: './src/index.pug' },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js',
@@ -19,7 +19,7 @@ module.exports = {
 
   devServer: {
     static: {
-      directory: path.join(__dirname, 'public'),
+      directory: path.join(__dirname, 'dist'),
     },
     compress: true,
     port: 9000,
