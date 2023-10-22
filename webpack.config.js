@@ -1,14 +1,13 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const PugPlugin = require('pug-plugin');
 
 module.exports = {
   entry: { index: './src/index.pug' },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'main.js',
-    publicPath: './',
+    path: path.join(__dirname, 'dist/'),
+    filename: 'index.html',
+    publicPath: '',
     clean: true,
   },
   devtool: 'source-map',
@@ -19,7 +18,7 @@ module.exports = {
 
   devServer: {
     static: {
-      directory: path.join(__dirname, 'dist'),
+      directory: path.join(__dirname, 'dist/'),
     },
     compress: true,
     port: 9000,
@@ -66,7 +65,6 @@ module.exports = {
   },
   resolve: {
     alias: {
-      // use alias to avoid relative paths like `./../../images/`
       Images: path.join(__dirname, './src/images/'),
       Fonts: path.join(__dirname, './src/vendor/fonts'),
       Styles: path.join(__dirname, './src/styles'),
@@ -75,17 +73,14 @@ module.exports = {
   },
   plugins: [
     new PugPlugin({
-      pretty: true, // formatting HTML, useful for development mode
+      pretty: true,
       js: {
-        // output filename of extracted JS file from source script
         filename: 'scripts/[name].js',
       },
       css: {
-        // output filename of extracted CSS file from source style
         filename: 'styles/[name].css',
       },
     }),
-    new MiniCssExtractPlugin(),
     new SpriteLoaderPlugin({
       plainSprite: true,
     }),
