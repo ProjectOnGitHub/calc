@@ -1,0 +1,19 @@
+doctype html
+html(lang="ru")
+  head
+    //- link(href=require("./favicon.svg"), rel="icon", type="image/svg")
+    meta(charset="utf-8")
+    title= "Учимся работать с шаблонизатором Pug"
+    script(src=require('./index.js'))
+    link(href=require('./index.css') rel='stylesheet')
+
+
+  body
+    .container
+      h1.title Hello, Test
+      svg.icon
+        use(xlink:href='#icon-sample')
+      svg.icon_small
+        use(xlink:href='#icon-example')
+      h1.subtitle Hello, Test
+      img.image(src=require("Images/sample.png") alt="Изображение")

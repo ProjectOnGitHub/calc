@@ -1,0 +1,22 @@
+@mixin flexible($width: 100%) {
+  display: flex;
+  width: $width;
+}
+
+@mixin gridable($width: 100%) {
+  display: grid;
+  width: $width;
+}
+
+@mixin unmarkedList($padding: 0, $margin: 0) {
+  list-style-type: none;
+  padding: $padding;
+  margin: $margin;
+}
+
+@mixin defaultLink {
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: text-decoration 1s ease;
+}

@@ -1,0 +1,29 @@
+body {
+  background-color: aliceblue;
+}
+
+.title {
+  font-weight: normal;
+  font-family: 'Inter';
+}
+
+.subtitle {
+  font-weight: normal;
+  font-family: Arial;
+}
+
+.container {
+  @include flexible();
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+
+  &_small {
+    width: 24px;
+    height: 24px;
+  }
+}
