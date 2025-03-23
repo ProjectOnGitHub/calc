@@ -1402,15 +1402,12 @@ var Calc = /*#__PURE__*/_createClass(function Calc(_ref) {
         }
       });
     });
-    console.log(_this.results);
   });
   _defineProperty(this, "setDefaultInputsValue", function () {
     _toConsumableArray(_this.checkboxes).forEach(function (item) {
       item.checked = _this.operationsStatus[item.value];
     });
     _this.number.value = _this.maxNumber;
-    console.log("default input value: ".concat(_this.number.value));
-    console.log("default maxNumber: ".concat(_this.maxNumber));
   });
   _defineProperty(this, "toggleCheckbox", function (event) {
     var _event$target = event.target,
@@ -1431,8 +1428,6 @@ var Calc = /*#__PURE__*/_createClass(function Calc(_ref) {
       _this.maxNumber = value;
       _this.usedIndexes = [];
       _this.setResults();
-      console.log("current input value: ".concat(_this.number.value));
-      console.log("current maxNumber: ".concat(_this.maxNumber));
     }
   });
   _defineProperty(this, "getRandomNumber", function () {
