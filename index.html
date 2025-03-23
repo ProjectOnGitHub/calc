@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <link href="images/favicon.png" rel="icon" type="image/png">
+    <meta charset="utf-8">
+    <title>Учимся работать с шаблонизатором Pug</title>
+    <script src="scripts/index.js"></script>
+    <link href="styles/index.css" rel="stylesheet">
+  </head>
+  <body>
+    <main class="main">
+      <form class="form js-form">
+        <div class="form__fieldset form__fieldset--settings"><label class="form__label form__label--checkbox"><input
+              class="form__checkbox js-form-input-checkbox" type="checkbox" checked required
+              value="sum"><form__label-text>Сложение</form__label-text></label><label
+            class="form__label form__label--checkbox"><input class="form__checkbox js-form-input-checkbox"
+              type="checkbox" required value="diff"><form__label-text>Вычитание</form__label-text></label><label
+            class="form__label form__label--number"><input class="form__input js-form-input-number" type="number"
+              required><form__label-text>Введите целое число:</form__label-text></label></div>
+        <div class="form__fieldset form__fieldset--expression">
+          <div class="form__fieldset-container"><span class="form__expression js-form-expression"></span><span
+              class="form__result js-form-result"></span></div>
+        </div>
+        <div class="form__buttons"><button class="form__button form__button--next js-button-next"
+            type="button">Следующее</button><button class="form__button form__button--result js-button-result"
+            type="button">Показать ответ</button></div>
+      </form>
+    </main>
+  </body>
+</html>
