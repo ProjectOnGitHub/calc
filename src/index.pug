@@ -10,21 +10,21 @@ html(lang="ru")
   body
     main.main
       form.form.js-form
-        .form__fieldset
+        .form__fieldset.form__fieldset--settings
           label.form__label.form__label--checkbox
             input.form__checkbox(type="checkbox" checked required value="sum").js-form-input-checkbox
             form__label-text Сложение
           label.form__label.form__label--checkbox
             input.form__checkbox(type="checkbox" required value="diff").js-form-input-checkbox
             form__label-text Вычитание
-
-        .form__fieldset
-          span.form__expression.js-form-expression
-          span.p.form__result.js-form-result
-
-        .form__fieldset
-          label.form__label.form__label--number Введите целое число:
+          label.form__label.form__label--number
             input.form__input(type="number" required).js-form-input-number
+            form__label-text Введите целое число:
+
+        .form__fieldset.form__fieldset--expression
+          .form__fieldset-container
+            span.form__expression.js-form-expression
+            span.form__result.js-form-result
 
         .form__buttons
           button.form__button.form__button--next.js-button-next(type="button") Следующее
