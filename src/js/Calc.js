@@ -1,6 +1,6 @@
 export default class Calc {
   constructor({
-                maxNumber = 10,
+                maxNumber = 2,
                 isSum = true,
                 isDiff = true,
                 formSelector = '.js-form',
@@ -8,15 +8,19 @@ export default class Calc {
                 fieldResultSelector = '.js-form-result',
                 buttonNextSelector = '.js-button-next',
                 buttonResultSelector = '.js-button-result',
+                checkboxSelector = '.js-form-input-checkbox',
               }) {
+    this.operationsStatus = {
+      sum: isSum,
+      diff: isDiff,
+    };
     this.maxNumber = maxNumber;
-    this.isSum = isSum;
-    this.isDiff = isDiff;
     this.form = document.querySelector(formSelector);
     this.fieldExpression = this.form.querySelector(fieldExpressionSelector);
     this.fieldResult = this.form.querySelector(fieldResultSelector);
     this.buttonNext = this.form.querySelector(buttonNextSelector);
     this.buttonResult = this.form.querySelector(buttonResultSelector);
+    this.checkboxes = this.form.querySelectorAll(checkboxSelector);
     this.numbers = Array.from({ length: this.maxNumber }, (_, i) => i + 1);
     this.results = [];
     this.usedIndexes = [];
@@ -27,21 +31,39 @@ export default class Calc {
       '+': (a, b) => a + b,
       '-': (a, b) => a - b,
     };
+    this.setDefaultCheckboxValue();
     this.setResults();
     this.setEventListeners();
   }
 
   setResults = () => {
+    const { sum: isSum, diff: isDiff } = this.operationsStatus;
+
     this.numbers.forEach((firstNumber) => {
       this.numbers.forEach((secondNumber) => {
-        if (this.isSum && firstNumber + secondNumber <= this.maxNumber) {
+        if (isSum && firstNumber + secondNumber <= this.maxNumber) {
           this.results.push(`${firstNumber}+${secondNumber}`);
         }
-        if (this.isDiff && firstNumber - secondNumber >= 0) {
+        if (isDiff && firstNumber - secondNumber >= 0) {
           this.results.push(`${firstNumber}-${secondNumber}`);
         }
       });
     });
+  };
+
+  setDefaultCheckboxValue = () => {
+    [...this.checkboxes].forEach((item)=> {
+      item.checked = this.operationsStatus[item.value];
+    });
+  };
+
+  toggleCheckbox = (event) => {
+    const { value, type, checked } = event.target;
+    if (type === 'checkbox') {
+      this.operationsStatus[value] = checked;
+      this.usedIndexes = [];
+      this.setResults();
+    }
   };
 
   getRandomNumber = () => {
@@ -50,7 +72,9 @@ export default class Calc {
       .filter(index => !this.usedIndexes.includes(index));
 
     if (availableIndexes.length === 0) {
-      this.fieldResult.textContent = 'Больше примеров нет';
+      this.fieldExpression.textContent = 'Больше примеров нет';
+      this.fieldResult.textContent = '';
+      this.buttonResult.disabled = true;
       return null;
     }
 
@@ -83,5 +107,8 @@ export default class Calc {
   setEventListeners = () => {
     this.buttonNext.addEventListener('click', this.createExpression);
     this.buttonResult.addEventListener('click', this.viewResult);
+    this.form.addEventListener('change', (event) => {
+      this.toggleCheckbox(event);
+    });
   };
 }
