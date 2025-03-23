@@ -4,16 +4,20 @@
 }
 
 body {
+  display: grid;
+  justify-content: center;
   font-family: Arial, sans-serif;
   background-color: #f5f5f5;
   margin: 0;
   padding: 0;
 }
 
-main.main {
+.main {
+  display: grid;
+  justify-content: center;
   padding: 20px;
   width: max-content;
-  margin: 40px auto;
+  margin: 40px 0;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
