@@ -51,8 +51,6 @@ export default class Calc {
         }
       });
     });
-
-    console.log(this.results)
   };
 
   setDefaultInputsValue = () => {
@@ -60,8 +58,6 @@ export default class Calc {
       item.checked = this.operationsStatus[item.value];
     });
     this.number.value = this.maxNumber;
-    console.log(`default input value: ${this.number.value}`);
-    console.log(`default maxNumber: ${this.maxNumber}`);
   };
 
   toggleCheckbox = (event) => {
@@ -79,8 +75,6 @@ export default class Calc {
       this.maxNumber = value;
       this.usedIndexes = [];
       this.setResults();
-      console.log(`current input value: ${this.number.value}`);
-      console.log(`current maxNumber: ${this.maxNumber}`);
     }
   };
 
