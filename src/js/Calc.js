@@ -1,6 +1,6 @@
 export default class Calc {
   constructor({
-                maxNumber = 2,
+                maxNumber = 10,
                 isSum = true,
                 isDiff = true,
                 formSelector = '.js-form',
@@ -9,6 +9,7 @@ export default class Calc {
                 buttonNextSelector = '.js-button-next',
                 buttonResultSelector = '.js-button-result',
                 checkboxSelector = '.js-form-input-checkbox',
+                numberSelector = '.js-form-input-number',
               }) {
     this.operationsStatus = {
       sum: isSum,
@@ -21,7 +22,7 @@ export default class Calc {
     this.buttonNext = this.form.querySelector(buttonNextSelector);
     this.buttonResult = this.form.querySelector(buttonResultSelector);
     this.checkboxes = this.form.querySelectorAll(checkboxSelector);
-    this.numbers = Array.from({ length: this.maxNumber }, (_, i) => i + 1);
+    this.number = this.form.querySelector(numberSelector);
     this.results = [];
     this.usedIndexes = [];
     this.firstNumber = null;
@@ -31,16 +32,17 @@ export default class Calc {
       '+': (a, b) => a + b,
       '-': (a, b) => a - b,
     };
-    this.setDefaultCheckboxValue();
+    this.setDefaultInputsValue();
     this.setResults();
     this.setEventListeners();
   }
 
   setResults = () => {
+    this.results = [];
     const { sum: isSum, diff: isDiff } = this.operationsStatus;
-
-    this.numbers.forEach((firstNumber) => {
-      this.numbers.forEach((secondNumber) => {
+    const numbers = Array.from({ length: this.maxNumber }, (_, i) => i + 1);
+    numbers.forEach((firstNumber) => {
+      numbers.forEach((secondNumber) => {
         if (isSum && firstNumber + secondNumber <= this.maxNumber) {
           this.results.push(`${firstNumber}+${secondNumber}`);
         }
@@ -49,12 +51,17 @@ export default class Calc {
         }
       });
     });
+
+    console.log(this.results)
   };
 
-  setDefaultCheckboxValue = () => {
-    [...this.checkboxes].forEach((item)=> {
+  setDefaultInputsValue = () => {
+    [...this.checkboxes].forEach((item) => {
       item.checked = this.operationsStatus[item.value];
     });
+    this.number.value = this.maxNumber;
+    console.log(`default input value: ${this.number.value}`);
+    console.log(`default maxNumber: ${this.maxNumber}`);
   };
 
   toggleCheckbox = (event) => {
@@ -63,6 +70,17 @@ export default class Calc {
       this.operationsStatus[value] = checked;
       this.usedIndexes = [];
       this.setResults();
+    }
+  };
+
+  setInputValue = (event) => {
+    const { value, type } = event.target;
+    if (type === 'number') {
+      this.maxNumber = value;
+      this.usedIndexes = [];
+      this.setResults();
+      console.log(`current input value: ${this.number.value}`);
+      console.log(`current maxNumber: ${this.maxNumber}`);
     }
   };
 
@@ -109,6 +127,7 @@ export default class Calc {
     this.buttonResult.addEventListener('click', this.viewResult);
     this.form.addEventListener('change', (event) => {
       this.toggleCheckbox(event);
+      this.setInputValue(event);
     });
   };
 }
