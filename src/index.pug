@@ -8,23 +8,22 @@ html(lang="ru")
     link(href='./index.scss' rel='stylesheet')
 
   body
-    .lesson
-      h1 Урок сложения и вычитания
+    main.main
+      form.form.js-form
+        .form__fieldset
+          label.form__label.form__label--checkbox
+            input.form__checkbox(type="checkbox" checked).js-form-input-checkbox
+            form__label-text Сложение
+          label.form__label.form__label--checkbox
+            input.form__checkbox(type="checkbox").js-form-input-checkbox
+            form__label-text Вычитание
 
-      form.form
-        .form__group
-          .form__checkbox-group
-            .form__checkbox
-              input(type="checkbox", id="addition", checked)
-              label(for="addition") Сложение
-            .form__checkbox
-              input(type="checkbox", id="subtraction")
-              label(for="subtraction") Вычитание
+        .form__result.js-form-result
 
-        .form__group
-          label(for="number") Введите целое число:
-          input.form__input(type="number", id="number", required)
+        .form__fieldset
+          label.form__label.form__label--number Введите целое число:
+            input.form__input(type="number" required).js-form-input-number
 
-        .form__button-group
-          button.form__button.form__button--next(type="button", id="next", disabled) Следующее
-          button.form__button.form__button--result(type="button", id="showAnswer", disabled) Показать ответ
+        .form__buttons
+          button.form__button.form__button--next.js-button-next(type="button") Следующее
+          button.form__button.form__button--result.js-button-result(type="button") Показать ответ
