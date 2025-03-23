@@ -3,17 +3,28 @@ html(lang="ru")
   head
     link(href=require("./favicon.png"), rel="icon", type="image/png")
     meta(charset="utf-8")
-    title= "Учимся работать с шаблонизатором Pug"
-    script(src=require('./index.js'))
-    link(href=require('./index.css') rel='stylesheet')
-
+    title Учимся работать с шаблонизатором Pug
+    script(src='./index.js')
+    link(href='./index.scss' rel='stylesheet')
 
   body
-    .container
-      h1.title Hello, Test
-      svg.icon
-        use(xlink:href='#icon-sample')
-      svg.icon_small
-        use(xlink:href='#icon-example')
-      h1.subtitle Hello, Test
-      img.image(src=require("Images/sample.png") alt="Изображение")
+    .lesson
+      h1 Урок сложения и вычитания
+
+      form.form
+        .form__group
+          .form__checkbox-group
+            .form__checkbox
+              input(type="checkbox", id="addition", checked)
+              label(for="addition") Сложение
+            .form__checkbox
+              input(type="checkbox", id="subtraction")
+              label(for="subtraction") Вычитание
+
+        .form__group
+          label(for="number") Введите целое число:
+          input.form__input(type="number", id="number", required)
+
+        .form__button-group
+          button.form__button.form__button--next(type="button", id="next", disabled) Следующее
+          button.form__button.form__button--result(type="button", id="showAnswer", disabled) Показать ответ

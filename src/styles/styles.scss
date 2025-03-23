@@ -1,29 +1,50 @@
-body {
-  background-color: aliceblue;
+.lesson {
+  font-size: 18px;
+  margin-bottom: 20px;
 }
 
-.title {
-  font-weight: normal;
-  font-family: 'Inter';
-}
-
-.subtitle {
-  font-weight: normal;
-  font-family: Arial;
-}
-
-.container {
-  @include flexible();
+.form {
+  display: flex;
   flex-direction: column;
-  align-items: center;
-}
+  gap: 15px;
 
-.icon {
-  width: 48px;
-  height: 48px;
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
 
-  &_small {
-    width: 24px;
-    height: 24px;
+  &__checkbox-group {
+    display: flex;
+    gap: 15px;
+  }
+
+  &__checkbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  &__input {
+    padding: 8px;
+    font-size: 16px;
+  }
+
+  &__button-group {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__button {
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+
+    &:disabled {
+      background-color: #e0e0e0;
+      cursor: not-allowed;
+    }
   }
 }
