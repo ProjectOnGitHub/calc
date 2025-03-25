@@ -21,6 +21,7 @@ export default class Calc {
     this.form = document.querySelector(formSelector);
     this.fieldExpression = this.form.querySelector(fieldExpressionSelector);
     this.fieldResult = this.form.querySelector(fieldResultSelector);
+    this.buttons = this.form.querySelectorAll(`${buttonNextSelector}, ${buttonResultSelector}`);
     this.buttonNext = this.form.querySelector(buttonNextSelector);
     this.buttonResult = this.form.querySelector(buttonResultSelector);
     this.checkboxes = this.form.querySelectorAll(checkboxSelector);
@@ -36,6 +37,7 @@ export default class Calc {
       '×': (a, b) => a * b,
     };
     this.setDefaultInputsValue();
+    this.setButtonsDisabled();
     this.setResults();
     this.setEventListeners();
   }
@@ -57,7 +59,6 @@ export default class Calc {
         }
       });
     });
-    console.log(this.results);
   };
 
   setDefaultInputsValue = () => {
@@ -66,6 +67,15 @@ export default class Calc {
     });
     this.number.value = this.maxNumber;
   };
+
+  setButtonsDisabled = () => {
+    const isCheckboxEnabled = [...this.checkboxes].some(item => item.checked);
+    [...this.buttons].forEach((item) => {
+      item.disabled = !isCheckboxEnabled;
+    });
+    console.log(this.buttons)
+  };
+
 
   toggleCheckbox = (event) => {
     const { value, type, checked } = event.target;
@@ -135,13 +145,13 @@ export default class Calc {
     this.fieldResult.textContent = this.operations[this.sign](this.firstNumber, this.secondNumber);
   };
 
-
   setEventListeners = () => {
     this.buttonNext.addEventListener('click', this.createExpression);
     this.buttonResult.addEventListener('click', this.viewResult);
     this.form.addEventListener('change', (event) => {
       this.toggleCheckbox(event);
       this.setInputValue(event);
+      this.setButtonsDisabled();
     });
   };
 }
