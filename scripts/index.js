@@ -1367,6 +1367,10 @@ var Calc = /*#__PURE__*/_createClass(function Calc(_ref) {
     _isSum = _ref$isSum === void 0 ? true : _ref$isSum,
     _ref$isDiff = _ref.isDiff,
     _isDiff = _ref$isDiff === void 0 ? true : _ref$isDiff,
+    _ref$isMul = _ref.isMul,
+    _isMul = _ref$isMul === void 0 ? false : _ref$isMul,
+    _ref$isDivide = _ref.isDivide,
+    _isDivide = _ref$isDivide === void 0 ? false : _ref$isDivide,
     _ref$formSelector = _ref.formSelector,
     formSelector = _ref$formSelector === void 0 ? '.js-form' : _ref$formSelector,
     _ref$fieldExpressionS = _ref.fieldExpressionSelector,
@@ -1386,7 +1390,9 @@ var Calc = /*#__PURE__*/_createClass(function Calc(_ref) {
     _this.results = [];
     var _this$operationsStatu = _this.operationsStatus,
       isSum = _this$operationsStatu.sum,
-      isDiff = _this$operationsStatu.diff;
+      isDiff = _this$operationsStatu.diff,
+      isMul = _this$operationsStatu.mul,
+      isDivide = _this$operationsStatu.divide;
     var numbers = Array.from({
       length: _this.maxNumber
     }, function (_, i) {
@@ -1400,6 +1406,12 @@ var Calc = /*#__PURE__*/_createClass(function Calc(_ref) {
         if (isDiff && firstNumber - secondNumber >= 0) {
           _this.results.push("".concat(firstNumber, "-").concat(secondNumber));
         }
+        if (isMul && firstNumber * secondNumber <= _this.maxNumber) {
+          _this.results.push("".concat(firstNumber, "\xD7").concat(secondNumber));
+        }
+        if (isDivide && firstNumber % secondNumber === 0) {
+          _this.results.push("".concat(firstNumber, "\xF7").concat(secondNumber));
+        }
       });
     });
   });
@@ -1408,6 +1420,14 @@ var Calc = /*#__PURE__*/_createClass(function Calc(_ref) {
       item.checked = _this.operationsStatus[item.value];
     });
     _this.number.value = _this.maxNumber;
+  });
+  _defineProperty(this, "setButtonsDisabled", function () {
+    var isCheckboxEnabled = _toConsumableArray(_this.checkboxes).some(function (item) {
+      return item.checked;
+    });
+    _toConsumableArray(_this.buttons).forEach(function (item) {
+      item.disabled = !isCheckboxEnabled;
+    });
   });
   _defineProperty(this, "toggleCheckbox", function (event) {
     var _event$target = event.target,
@@ -1447,20 +1467,33 @@ var Calc = /*#__PURE__*/_createClass(function Calc(_ref) {
     _this.usedIndexes.push(chosenIndex);
     return chosenIndex;
   });
+  _defineProperty(this, "generateElement", function (string) {
+    var parentElement = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _this.fieldExpression;
+    var tag = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'span';
+    var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
+    var element = document.createElement(tag);
+    element.className = className;
+    element.textContent = string;
+    parentElement.appendChild(element);
+  });
   _defineProperty(this, "createExpression", function () {
     var index = _this.getRandomNumber();
     if (index === null) return;
     var expression = _this.results[index];
-    var _expression$split = expression.split(/([+\-])/),
+    var _expression$split = expression.split(/([+\-×÷])/),
       _expression$split2 = _slicedToArray(_expression$split, 3),
       firstNumber = _expression$split2[0],
       sign = _expression$split2[1],
       secondNumber = _expression$split2[2];
+    _this.fieldExpression.textContent = '';
+    _this.fieldResult.textContent = '';
     _this.firstNumber = parseInt(firstNumber, 10);
     _this.sign = sign;
     _this.secondNumber = parseInt(secondNumber, 10);
-    _this.fieldResult.textContent = '';
-    _this.fieldExpression.textContent = "".concat(_this.firstNumber, " ").concat(_this.sign, " ").concat(_this.secondNumber, " = ");
+    var elements = [_this.firstNumber, _this.sign, _this.secondNumber, '='];
+    elements.forEach(function (item) {
+      return _this.generateElement(item);
+    });
   });
   _defineProperty(this, "viewResult", function () {
     _this.fieldResult.textContent = _this.operations[_this.sign](_this.firstNumber, _this.secondNumber);
@@ -1471,16 +1504,20 @@ var Calc = /*#__PURE__*/_createClass(function Calc(_ref) {
     _this.form.addEventListener('change', function (event) {
       _this.toggleCheckbox(event);
       _this.setInputValue(event);
+      _this.setButtonsDisabled();
     });
   });
   this.operationsStatus = {
     sum: _isSum,
-    diff: _isDiff
+    diff: _isDiff,
+    mul: _isMul,
+    divide: _isDivide
   };
   this.maxNumber = maxNumber;
   this.form = document.querySelector(formSelector);
   this.fieldExpression = this.form.querySelector(fieldExpressionSelector);
   this.fieldResult = this.form.querySelector(fieldResultSelector);
+  this.buttons = this.form.querySelectorAll("".concat(buttonNextSelector, ", ").concat(buttonResultSelector));
   this.buttonNext = this.form.querySelector(buttonNextSelector);
   this.buttonResult = this.form.querySelector(buttonResultSelector);
   this.checkboxes = this.form.querySelectorAll(checkboxSelector);
@@ -1496,9 +1533,16 @@ var Calc = /*#__PURE__*/_createClass(function Calc(_ref) {
     },
     '-': function _(a, b) {
       return a - b;
+    },
+    '×': function _(a, b) {
+      return a * b;
+    },
+    '÷': function _(a, b) {
+      return a / b;
     }
   };
   this.setDefaultInputsValue();
+  this.setButtonsDisabled();
   this.setResults();
   this.setEventListeners();
 });
