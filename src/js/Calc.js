@@ -3,6 +3,8 @@ export default class Calc {
                 maxNumber = 10,
                 isSum = true,
                 isDiff = true,
+                isMul = false,
+                isDivide = false,
                 formSelector = '.js-form',
                 fieldExpressionSelector = '.js-form-expression',
                 fieldResultSelector = '.js-form-result',
@@ -14,11 +16,14 @@ export default class Calc {
     this.operationsStatus = {
       sum: isSum,
       diff: isDiff,
+      mul: isMul,
+      divide: isDivide,
     };
     this.maxNumber = maxNumber;
     this.form = document.querySelector(formSelector);
     this.fieldExpression = this.form.querySelector(fieldExpressionSelector);
     this.fieldResult = this.form.querySelector(fieldResultSelector);
+    this.buttons = this.form.querySelectorAll(`${buttonNextSelector}, ${buttonResultSelector}`);
     this.buttonNext = this.form.querySelector(buttonNextSelector);
     this.buttonResult = this.form.querySelector(buttonResultSelector);
     this.checkboxes = this.form.querySelectorAll(checkboxSelector);
@@ -31,15 +36,18 @@ export default class Calc {
     this.operations = {
       '+': (a, b) => a + b,
       '-': (a, b) => a - b,
+      '×': (a, b) => a * b,
+      '÷': (a, b) => a / b,
     };
     this.setDefaultInputsValue();
+    this.setButtonsDisabled();
     this.setResults();
     this.setEventListeners();
   }
 
   setResults = () => {
     this.results = [];
-    const { sum: isSum, diff: isDiff } = this.operationsStatus;
+    const { sum: isSum, diff: isDiff, mul: isMul, divide: isDivide } = this.operationsStatus;
     const numbers = Array.from({ length: this.maxNumber }, (_, i) => i + 1);
     numbers.forEach((firstNumber) => {
       numbers.forEach((secondNumber) => {
@@ -48,6 +56,12 @@ export default class Calc {
         }
         if (isDiff && firstNumber - secondNumber >= 0) {
           this.results.push(`${firstNumber}-${secondNumber}`);
+        }
+        if (isMul && firstNumber * secondNumber <= this.maxNumber) {
+          this.results.push(`${firstNumber}×${secondNumber}`);
+        }
+        if (isDivide && firstNumber % secondNumber === 0) {
+          this.results.push(`${firstNumber}÷${secondNumber}`);
         }
       });
     });
@@ -58,6 +72,13 @@ export default class Calc {
       item.checked = this.operationsStatus[item.value];
     });
     this.number.value = this.maxNumber;
+  };
+
+  setButtonsDisabled = () => {
+    const isCheckboxEnabled = [...this.checkboxes].some(item => item.checked);
+    [...this.buttons].forEach((item) => {
+      item.disabled = !isCheckboxEnabled;
+    });
   };
 
   toggleCheckbox = (event) => {
@@ -98,18 +119,30 @@ export default class Calc {
     return chosenIndex;
   };
 
+  generateElement = (string, parentElement = this.fieldExpression, tag = 'span', className = '') => {
+    const element = document.createElement(tag);
+    element.className = className;
+    element.textContent = string;
+    parentElement.appendChild(element);
+  };
+
   createExpression = () => {
     const index = this.getRandomNumber();
     if (index === null) return;
 
     const expression = this.results[index];
-    const [firstNumber, sign, secondNumber] = expression.split(/([+\-])/);
+    const [firstNumber, sign, secondNumber] = expression.split(/([+\-×÷])/);
+
+    this.fieldExpression.textContent = '';
+    this.fieldResult.textContent = '';
 
     this.firstNumber = parseInt(firstNumber, 10);
     this.sign = sign;
     this.secondNumber = parseInt(secondNumber, 10);
-    this.fieldResult.textContent = '';
-    this.fieldExpression.textContent = `${this.firstNumber} ${this.sign} ${this.secondNumber} = `;
+
+    const elements = [this.firstNumber, this.sign, this.secondNumber, '='];
+
+    elements.forEach((item) => this.generateElement(item));
   };
 
   viewResult = () => {
@@ -122,6 +155,7 @@ export default class Calc {
     this.form.addEventListener('change', (event) => {
       this.toggleCheckbox(event);
       this.setInputValue(event);
+      this.setButtonsDisabled();
     });
   };
 }

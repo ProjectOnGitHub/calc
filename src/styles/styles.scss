@@ -16,11 +16,11 @@ body {
   display: grid;
   justify-content: center;
   padding: 20px;
-  width: max-content;
+  width: 100%;
   margin: 40px 0;
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  //box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Стили формы */
@@ -28,10 +28,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
 
   &__fieldset {
     display: grid;
     row-gap: 10px;
+    width: 100%;
 
     &-container {
       display: flex;
@@ -47,9 +49,8 @@ body {
     }
 
     &--expression {
-      min-height: 120px;
+      min-height: 200px;
       display: flex;
-      flex-flow: row nowrap;
     }
   }
 
@@ -71,15 +72,14 @@ body {
     }
   }
 
-  &__checkbox {
-  }
-
   &__expression,
   &__result {
     font-size: 54px;
     font-weight: bold;
-    display: block;
+    display: flex;
     text-align: center;
+    gap: 8px;
+    white-space: wrap;
   }
 
   &__input {
@@ -113,16 +113,20 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: 0.3s ease-in-out;
 
     &:hover {
       background-color: #0056b3;
     }
+
+    &:disabled {
+      background-color: #d3d3d3;
+      color: #a9a9a9;
+      cursor: not-allowed;
+    }
   }
 }
 
-
-/* Стили для состояния активных чекбоксов */
 .form__label--checkbox {
   input:checked + .form__label-text {
     color: #007bff;

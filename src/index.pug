@@ -18,13 +18,19 @@ html(lang="ru")
           label.form__label.form__label--checkbox
             input.form__checkbox(type="checkbox" required value="diff").js-form-input-checkbox
             form__label-text Вычитание
+          label.form__label.form__label--checkbox
+            input.form__checkbox(type="checkbox" required value="mul").js-form-input-checkbox
+            form__label-text Умножение
+          label.form__label.form__label--checkbox
+            input.form__checkbox(type="checkbox" required value="divide").js-form-input-checkbox
+            form__label-text Деление
           label.form__label.form__label--number
             input.form__input(type="number" required).js-form-input-number
             form__label-text Введите целое число:
 
         .form__fieldset.form__fieldset--expression
           .form__fieldset-container
-            span.form__expression.js-form-expression
+            .form__expression.js-form-expression
             span.form__result.js-form-result
 
         .form__buttons
