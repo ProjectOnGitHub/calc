@@ -57,7 +57,7 @@ export default class Calc {
         }
       });
     });
-    console.log(this.results)
+    console.log(this.results);
   };
 
   setDefaultInputsValue = () => {
@@ -105,6 +105,13 @@ export default class Calc {
     return chosenIndex;
   };
 
+  generateElement = (string, parentElement = this.fieldExpression, tag = 'span', className = '') => {
+    const element = document.createElement(tag);
+    element.className = className;
+    element.textContent = string;
+    parentElement.appendChild(element);
+  };
+
   createExpression = () => {
     const index = this.getRandomNumber();
     if (index === null) return;
@@ -112,16 +119,22 @@ export default class Calc {
     const expression = this.results[index];
     const [firstNumber, sign, secondNumber] = expression.split(/([+\-×/])/);
 
+    this.fieldExpression.textContent = '';
+    this.fieldResult.textContent = '';
+
     this.firstNumber = parseInt(firstNumber, 10);
     this.sign = sign;
     this.secondNumber = parseInt(secondNumber, 10);
-    this.fieldResult.textContent = '';
-    this.fieldExpression.textContent = `${this.firstNumber} ${this.sign} ${this.secondNumber} = `;
+
+    const elements = [this.firstNumber, this.sign, this.secondNumber, '='];
+
+    elements.forEach((item) => this.generateElement(item));
   };
 
   viewResult = () => {
     this.fieldResult.textContent = this.operations[this.sign](this.firstNumber, this.secondNumber);
   };
+
 
   setEventListeners = () => {
     this.buttonNext.addEventListener('click', this.createExpression);

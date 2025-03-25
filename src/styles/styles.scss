@@ -78,8 +78,9 @@ body {
   &__result {
     font-size: 54px;
     font-weight: bold;
-    display: block;
+    display: flex;
     text-align: center;
+    gap: 8px;
   }
 
   &__input {
