@@ -3,7 +3,8 @@ export default class Calc {
                 maxNumber = 10,
                 isSum = true,
                 isDiff = true,
-                isMul = true,
+                isMul = false,
+                isDivide = false,
                 formSelector = '.js-form',
                 fieldExpressionSelector = '.js-form-expression',
                 fieldResultSelector = '.js-form-result',
@@ -16,6 +17,7 @@ export default class Calc {
       sum: isSum,
       diff: isDiff,
       mul: isMul,
+      divide: isDivide,
     };
     this.maxNumber = maxNumber;
     this.form = document.querySelector(formSelector);
@@ -35,6 +37,7 @@ export default class Calc {
       '+': (a, b) => a + b,
       '-': (a, b) => a - b,
       '×': (a, b) => a * b,
+      '÷': (a, b) => a / b,
     };
     this.setDefaultInputsValue();
     this.setButtonsDisabled();
@@ -44,7 +47,7 @@ export default class Calc {
 
   setResults = () => {
     this.results = [];
-    const { sum: isSum, diff: isDiff, mul: isMul } = this.operationsStatus;
+    const { sum: isSum, diff: isDiff, mul: isMul, divide: isDivide } = this.operationsStatus;
     const numbers = Array.from({ length: this.maxNumber }, (_, i) => i + 1);
     numbers.forEach((firstNumber) => {
       numbers.forEach((secondNumber) => {
@@ -56,6 +59,9 @@ export default class Calc {
         }
         if (isMul && firstNumber * secondNumber <= this.maxNumber) {
           this.results.push(`${firstNumber}×${secondNumber}`);
+        }
+        if (isDivide && firstNumber % secondNumber === 0) {
+          this.results.push(`${firstNumber}÷${secondNumber}`);
         }
       });
     });
@@ -73,9 +79,7 @@ export default class Calc {
     [...this.buttons].forEach((item) => {
       item.disabled = !isCheckboxEnabled;
     });
-    console.log(this.buttons)
   };
-
 
   toggleCheckbox = (event) => {
     const { value, type, checked } = event.target;
@@ -127,7 +131,7 @@ export default class Calc {
     if (index === null) return;
 
     const expression = this.results[index];
-    const [firstNumber, sign, secondNumber] = expression.split(/([+\-×/])/);
+    const [firstNumber, sign, secondNumber] = expression.split(/([+\-×÷])/);
 
     this.fieldExpression.textContent = '';
     this.fieldResult.textContent = '';
