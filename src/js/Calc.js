@@ -3,6 +3,7 @@ export default class Calc {
                 maxNumber = 10,
                 isSum = true,
                 isDiff = true,
+                isMul = true,
                 formSelector = '.js-form',
                 fieldExpressionSelector = '.js-form-expression',
                 fieldResultSelector = '.js-form-result',
@@ -14,6 +15,7 @@ export default class Calc {
     this.operationsStatus = {
       sum: isSum,
       diff: isDiff,
+      mul: isMul,
     };
     this.maxNumber = maxNumber;
     this.form = document.querySelector(formSelector);
@@ -31,6 +33,7 @@ export default class Calc {
     this.operations = {
       '+': (a, b) => a + b,
       '-': (a, b) => a - b,
+      '×': (a, b) => a * b,
     };
     this.setDefaultInputsValue();
     this.setResults();
@@ -39,7 +42,7 @@ export default class Calc {
 
   setResults = () => {
     this.results = [];
-    const { sum: isSum, diff: isDiff } = this.operationsStatus;
+    const { sum: isSum, diff: isDiff, mul: isMul } = this.operationsStatus;
     const numbers = Array.from({ length: this.maxNumber }, (_, i) => i + 1);
     numbers.forEach((firstNumber) => {
       numbers.forEach((secondNumber) => {
@@ -49,8 +52,12 @@ export default class Calc {
         if (isDiff && firstNumber - secondNumber >= 0) {
           this.results.push(`${firstNumber}-${secondNumber}`);
         }
+        if (isMul && firstNumber * secondNumber <= this.maxNumber) {
+          this.results.push(`${firstNumber}×${secondNumber}`);
+        }
       });
     });
+    console.log(this.results)
   };
 
   setDefaultInputsValue = () => {
@@ -103,7 +110,7 @@ export default class Calc {
     if (index === null) return;
 
     const expression = this.results[index];
-    const [firstNumber, sign, secondNumber] = expression.split(/([+\-])/);
+    const [firstNumber, sign, secondNumber] = expression.split(/([+\-×/])/);
 
     this.firstNumber = parseInt(firstNumber, 10);
     this.sign = sign;
